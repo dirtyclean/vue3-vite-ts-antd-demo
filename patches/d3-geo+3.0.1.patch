@@ -1,0 +1,14 @@
+diff --git a/node_modules/d3-geo/src/projection/mercator.js b/node_modules/d3-geo/src/projection/mercator.js
+index be975a9..48569db 100644
+--- a/node_modules/d3-geo/src/projection/mercator.js
++++ b/node_modules/d3-geo/src/projection/mercator.js
+@@ -3,7 +3,8 @@ import rotation from "../rotation.js";
+ import projection from "./index.js";
+ 
+ export function mercatorRaw(lambda, phi) {
+-  return [lambda, log(tan((halfPi + phi) / 2))];
++  // return [lambda, log(tan((halfPi + phi) / 2))];
++  return [lambda, log(tan((halfPi + phi / 1.5) / 2))];
+ }
+ 
+ mercatorRaw.invert = function(x, y) {
