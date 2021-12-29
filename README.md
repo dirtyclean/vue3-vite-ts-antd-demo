@@ -2,7 +2,7 @@
 
 ## vscode
 配置windicss-intellisense：用于VS Code的智能WindiCSS工具
-配置Volar，与vetur相同，volar是一个针对vue的vscode插件，不过与vetur不同的是，volar提供了更为强大的功能，<setup> + TS + Volar = 真香
+配置Volar，与vetur相同，volar是一个针对vue的vscode插件，不过与vetur不同的是，volar提供了更为强大的功能，< setup > + TS + Volar = 真香
 ## commitlint.config.js
 前端提交信息规范
 ## vite-plugin-svg-icons
@@ -17,6 +17,7 @@ windicss 是以 Tailwindcss 为灵感制作的库,windicss更快、兼容性更�
 
 将 Vuex 用于中小型 Vue.js 项目是过度的，因为它重量级的，对性能降低有很大影响。因此，Vuex 适用于大规模、高复杂度的 Vue.js 项目。
 ## eslint
+采用standard-with-typescript规则
 ## stylelint
 ## prettier 
 
