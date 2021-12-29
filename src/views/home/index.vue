@@ -43,9 +43,9 @@ areaCodes.value = state.areaData.length ? [state.areaData[0].areaCode] : []
 const updateAreaCodes = currentAreaCode => {
     areaCodes.value = getSelectedIds(state.areaData, currentAreaCode, 'parentAreaCode', 'areaCode')
 }
-const d3MapRef = ref<null | HTMLElement>(null)
+const d3MapRef: Ref<HTMLElement | null> = ref(null)
 const closeInfoWindow = () => {
-    d3MapRef.value.closeInfoWindow()
+    d3MapRef.value && d3MapRef.value.closeInfoWindow()
 }
 </script>
 <style scoped></style>

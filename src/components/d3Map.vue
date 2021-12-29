@@ -3,9 +3,12 @@
  * @Author: dirtyclean 
  * @Date: 2021-12-23 17:13:15 
  * @Last Modified by: dirtyclean
- * @Last Modified time: 2021-12-28 17:48:37
+ * @Last Modified time: 2021-12-29 22:10:22
  */
 调用onDownloadBtnClick下载svg图片
+marker通过d3渲染----已完成文字渲染
+marker通过html渲染
+infoWindow通过html渲染----已完成
 -->
 <template>
     <div id="map">
@@ -14,6 +17,9 @@
         </div>
         <div class="infoWindow" v-if="infoWindow.show" :style="infoWindow.style" :key="generator.randomNum">
             <slot name="infoWindow" v-bind="currentMarker"></slot>
+        </div>
+        <div v-for="({ areaNaem, style }, index) in markerData" :key="index" class="absolute" :style="style">
+            {{ areaNaem }}
         </div>
     </div>
     <div id="bar"></div>
