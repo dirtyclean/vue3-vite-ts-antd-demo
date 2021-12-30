@@ -3,23 +3,27 @@
  * @Author: dirtyclean 
  * @Date: 2021-12-23 17:13:15 
  * @Last Modified by: dirtyclean
- * @Last Modified time: 2021-12-30 10:26:07
+ * @Last Modified time: 2021-12-30 17:06:41
  */
 调用onDownloadBtnClick下载svg图片
-marker通过d3渲染----已完成文字渲染
-marker通过html渲染
+marker通过d3渲染----已完成文字渲染 未完成复杂的实现
+marker通过html渲染----已完成
 infoWindow通过html渲染----已完成
 -->
 <template>
-    <div id="map">
-        <div class="svg-ct" ref="svg-ct">
-            <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
-        </div>
-        <div class="infoWindow" v-if="infoWindow.show" :style="infoWindow.style" :key="generator.randomNum">
+    <div class="relative overflow-hidden w-1/1 h-1/1" ref="svg">
+        <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="absolute z-1" v-if="infoWindow.show" :style="infoWindow.style" :key="generator.randomNum">
             <slot name="infoWindow" v-bind="currentMarker"></slot>
         </div>
-        <div v-for="({ areaNaem, style }, index) in markerData" :key="index" class="absolute" :style="style">
-            {{ areaNaem }}
+        <div
+            v-for="(item, index) in markerData"
+            :key="index"
+            class="absolute text-red-600"
+            :style="item.style"
+            @click="handleMarker(item)"
+        >
+            <span style="font-size: 12px">{{ item.areaName }}</span>
         </div>
     </div>
     <div id="bar"></div>
@@ -75,7 +79,6 @@ export default {
         }
     },
     data() {
-        this.markerData = []
         this.markersBoxG = undefined
         return {
             // 数据缓存字段名
@@ -102,7 +105,8 @@ export default {
 
             currentMarker: undefined,
             infoWindow: { ...defaultInfoWindow },
-            generator
+            generator,
+            markerData: []
         }
     },
     watch: {
@@ -120,8 +124,35 @@ export default {
         }, 800)
     },
     methods: {
-        async renderMarker() {
-            console.log(this.currentAreaCode, '====this.currentAreaCode====')
+        async renderMarkerByHtml() {
+            const markerData = await this.getAreaMarkerList({ areaId: this.currentAreaCode })
+            this.updateMarkerPosition(markerData)
+        },
+        updateMarkerPosition(markerData = this.markerData) {
+            this.markerData = markerData.map(item => {
+                const { longitude, latitude } = item
+                const position = this.getPositionByLatLng(latitude, longitude)
+                return {
+                    ...item,
+                    style: {
+                        left: `${position.x}px`,
+                        top: `${position.y}px`
+                    }
+                }
+            })
+        },
+        getPositionByLatLng(lat, lng, isApply = true) {
+            let position = this._projection([lng, lat])
+            const transform = d3.zoomTransform(this._topGroup.node())
+            if (isApply) {
+                position = transform.apply(position)
+            }
+            return {
+                x: position[0],
+                y: position[1]
+            }
+        },
+        async renderMarkerByD3() {
             this.markerData = await this.getAreaMarkerList({ areaId: this.currentAreaCode })
             const data = this.markerData
             console.log(this.markerData, '==this.markerData==')
@@ -149,11 +180,12 @@ export default {
                 .selectAll('.marker')
                 .data(data)
                 .attr('transform', d => {
-                    const position = this._projection([d.longitude, d.latitude])
+                    const position = this.getPositionByLatLng(d.latitude, d.longitude, false)
                     const transform = d3.zoomTransform(this._topGroup.node())
+                    console.log(transform, '===transform====')
                     // 如何将经纬度转换为translate的xy？渲染到svg上
                     // 根据投影函数，将经纬度转换为平面坐标 不同投影函数效果不同
-                    return `translate(${position[0]}, ${position[1]}) scale(${1 / transform.k})`
+                    return `translate(${position.x}, ${position.y}) scale(${1 / transform.k})`
                 })
                 .select('text')
                 .text(function (d) {
@@ -172,16 +204,20 @@ export default {
 
             d3.selectAll('.marker').on('click', (e, d) => {
                 console.log('选中marker', d, e)
-                this.currentMarker = d
-                let position = this._projection([d.longitude, d.latitude])
-                const transform = d3.zoomTransform(this._topGroup.node())
-                position = transform.apply(position)
-                this.infoWindow.show = true
-                this.infoWindow.style = {
-                    left: `${position[0]}px`,
-                    top: `${position[1]}px`
-                }
+                this.handleMarker(d)
             })
+        },
+        handleMarker(item) {
+            this.currentMarker = item
+            this.renderInfoWindow()
+        },
+        renderInfoWindow({ longitude, latitude } = this.currentMarker) {
+            const position = this.getPositionByLatLng(latitude, longitude)
+            this.infoWindow.show = true
+            this.infoWindow.style = {
+                left: `${position.x}px`,
+                top: `${position.y}px`
+            }
         },
         renderMarker2(data = [10, 15, 30, 50, 80, 65, 55, 30, 20, 10, 8]) {
             // enter
@@ -224,8 +260,8 @@ export default {
         },
         async initSVG() {
             const svg = (this._svg = d3.select('#svg'))
-            const svgEl = this.$refs['svg-ct']
-            console.log(svgEl, '===svgEl===', document.querySelector('.svg-ct'))
+            const svgEl = this.$refs.svg
+            console.log(svgEl, '===svgEl===', document.querySelector('.svg'))
             this._svgHeight = svgEl.clientHeight
             this._svgWidth = svgEl.clientWidth
             console.log(this._svgHeight)
@@ -370,7 +406,8 @@ export default {
                     .text(d => d.properties.name)
             }
 
-            this.renderMarker()
+            this.renderMarkerByD3()
+            this.renderMarkerByHtml()
             const animate = [shadow, areaGroup, labelGroup].filter(item => item)
             animate.forEach(n => n.transition().style('opacity', 1))
             /**
@@ -399,7 +436,6 @@ export default {
                     this._svg.selectAll(`g[label] text[code='${n}']`).style('opacity', 0)
                 }
             })
-
             /**
              * 缩放到目标
              * */
@@ -624,25 +660,14 @@ export default {
             //         .match(/translate\([0-9.,]*\)/)[0]
             //     return `${transform} scale(${1 / k})`
             // })
-            this.markersBoxG.selectAll('.marker').attr('transform', (d, i) => {
-                console.log(d, i)
-                const transform =
-                    d3
-                        .select('.marker-' + i)
-                        .attr('transform')
-                        .split(')')[0] + ')'
-                return `${transform} scale(${1 / e.transform.k})`
+            this.markersBoxG.selectAll('.marker').attr('transform', d => {
+                const position = this.getPositionByLatLng(d.latitude, d.longitude, false)
+                return `translate(${position.x}, ${position.y}) scale(${1 / e.transform.k})`
             })
             if (this.currentMarker && this.infoWindow.show) {
-                const { longitude, latitude } = this.currentMarker
-                let position = this._projection([longitude, latitude])
-                const transform = e.transform
-                position = transform.apply(position)
-                this.infoWindow.style = {
-                    left: `${position[0]}px`,
-                    top: `${position[1]}px`
-                }
+                this.renderInfoWindow()
             }
+            this.updateMarkerPosition()
         },
         /**
          * SVG全局点击捕获
@@ -724,9 +749,6 @@ export default {
 </script>
 
 <style lang="scss">
-.infoWindow {
-    position: absolute;
-}
 .tooltip {
     font-size: 14px;
 }
@@ -739,18 +761,6 @@ export default {
     color: #ccc;
     text-align: right;
     padding-right: 20px;
-}
-#map {
-    height: 100%;
-    width: 100%;
-    // background: url('../assets/images/bg.png') center;
-    background-size: cover;
-    position: relative;
-}
-
-.svg-ct {
-    height: 100%;
-    width: 100%;
 }
 
 text,
