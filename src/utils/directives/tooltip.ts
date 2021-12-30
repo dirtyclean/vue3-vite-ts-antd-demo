@@ -2,7 +2,7 @@
  * @Author: dirtyclean
  * @Date: 2021-11-16 15:45:48
  * @Last Modified by: dirtyclean
- * @Last Modified time: 2021-12-19 14:14:11
+ * @Last Modified time: 2021-12-30 09:17:51
  */
 import { createApp } from 'vue'
 import Tooltip from '@/components/tooltip.vue'
@@ -194,8 +194,8 @@ const hasWindowScrollbar = () => {
 }
 export default {
   mounted(el, binding, vnode) {
-    console.log('==========tooltip==============')
     // 给当前元素设置超出隐藏
+    el.style.display = 'block'
     el.style.overflow = 'hidden'
     el.style.textOverflow = 'ellipsis'
     el.style.whiteSpace = 'nowrap'

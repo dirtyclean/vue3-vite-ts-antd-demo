@@ -52,7 +52,7 @@ export default {
 <style lang="scss">
 .tip {
     position: absolute;
-    z-index: 999;
+    z-index: 999999;
     background: rgba(0, 0, 0, 0.75);
     border-radius: 5px;
     padding: 10px;
