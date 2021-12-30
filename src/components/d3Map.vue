@@ -3,7 +3,7 @@
  * @Author: dirtyclean 
  * @Date: 2021-12-23 17:13:15 
  * @Last Modified by: dirtyclean
- * @Last Modified time: 2021-12-28 17:48:37
+ * @Last Modified time: 2021-12-29 17:52:59
  */
 调用onDownloadBtnClick下载svg图片
 -->
@@ -388,10 +388,8 @@ export default {
             }
             this._svg.selectAll(`g[label] text`).style('opacity', null)
             const codePath = this.getCodePath(code)
-            console.log(codePath, '==codePath==', code)
             codePath.forEach(n => {
                 if (~~n !== code || level < 3) {
-                    console.log('zj')
                     this._svg.selectAll(`g[label] text[code='${n}']`).style('opacity', 0)
                 }
             })
