@@ -3,7 +3,7 @@
  * @Author: dirtyclean 
  * @Date: 2021-12-23 17:13:15 
  * @Last Modified by: dirtyclean
- * @Last Modified time: 2021-12-30 17:06:41
+ * @Last Modified time: 2021-12-31 11:21:44
  */
 调用onDownloadBtnClick下载svg图片
 marker通过d3渲染----已完成文字渲染 未完成复杂的实现
@@ -13,17 +13,30 @@ infoWindow通过html渲染----已完成
 <template>
     <div class="relative overflow-hidden w-1/1 h-1/1" ref="svg">
         <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <svg width="24px" height="32px" viewBox="0 0 24 32">
+            <defs>
+                <g class="marker-icon">
+                    <path
+                        d="M22.1628914,16.5 L15.4960882,28.8812059 C15.5438791,29.6080861 15.1498558,30.2552489 14.5284271,30.7213203 C13.8813462,31.206631 12.9857964,31.5 12,31.5 C11.0142036,31.5 10.1186538,31.206631 9.47157288,30.7213203 C8.85014424,30.2552489 8.45612085,29.6080861 8.50391175,28.8812059 L8.50391175,28.8812059 L1.83710858,16.5 L22.1628914,16.5 Z"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        stroke-width="1"
+                    />
+                    <circle stroke="currentColor" stroke-width="1" fill="currentColor" cx="12" cy="12" r="11.5" />
+                </g>
+            </defs>
+        </svg>
         <div class="absolute z-1" v-if="infoWindow.show" :style="infoWindow.style" :key="generator.randomNum">
             <slot name="infoWindow" v-bind="currentMarker"></slot>
         </div>
         <div
             v-for="(item, index) in markerData"
             :key="index"
-            class="absolute text-red-600"
-            :style="item.style"
+            :class="`absolute text-red-600`"
+            :style="{ ...item.style, fontSize: '12px' }"
             @click="handleMarker(item)"
         >
-            <span style="font-size: 12px">{{ item.areaName }}</span>
+            {{ item.areaName }}
         </div>
     </div>
     <div id="bar"></div>
@@ -124,14 +137,14 @@ export default {
         }, 800)
     },
     methods: {
-        async renderMarkerByHtml() {
-            const markerData = await this.getAreaMarkerList({ areaId: this.currentAreaCode })
-            this.updateMarkerPosition(markerData)
-        },
         updateMarkerPosition(markerData = this.markerData) {
             this.markerData = markerData.map(item => {
-                const { longitude, latitude } = item
-                const position = this.getPositionByLatLng(latitude, longitude)
+                const { longitude, latitude, areaCode } = item
+                const position = this.getPositionByLatLng({
+                    latitude,
+                    longitude,
+                    offset: [0, document.getElementsByClassName(`marker-${areaCode}`)[0].getBoundingClientRect().height]
+                })
                 return {
                     ...item,
                     style: {
@@ -141,18 +154,89 @@ export default {
                 }
             })
         },
-        getPositionByLatLng(lat, lng, isApply = true) {
-            let position = this._projection([lng, lat])
+        getPositionByLatLng({ latitude, longitude, offset }, isApply = true) {
+            let position = this._projection([longitude, latitude])
             const transform = d3.zoomTransform(this._topGroup.node())
             if (isApply) {
                 position = transform.apply(position)
+                offset = offset || [0, 0]
+                return {
+                    x: position[0] - offset[0],
+                    y: position[1] - offset[1]
+                }
             }
             return {
                 x: position[0],
                 y: position[1]
             }
         },
+        renderMarker() {
+            this.renderMarkerByD3().finally(() => {
+                this.renderMarkerByHtml()
+            })
+        },
+        async renderMarkerByHtml() {
+            const markerData = await this.getAreaMarkerList({ areaId: this.currentAreaCode })
+            this.updateMarkerPosition(markerData)
+        },
         async renderMarkerByD3() {
+            this.markerData = await this.getAreaMarkerList({ areaId: this.currentAreaCode })
+            const data = this.markerData
+            console.log(this.markerData, '==this.markerData==')
+            // enter
+            const cs = this.markersBoxG
+                .selectAll('.marker')
+                .data(data)
+                .enter()
+                .append('g')
+                .attr('class', 'marker')
+                .attr('color', () => {
+                    return 'red'
+                })
+                .on('mouseover', this.onAreaMouseOver)
+                .on('mouseout', this.onAreaMouseOut)
+                .on('mouseleave', this.onAreaMouseLeave)
+                .on('mousemove', this.onAreaMouseMove)
+            cs.append('text').attr('font-size', this.areaLabelFontSize)
+            // <use>标记的作用是能从SVG文档内部取出一个节点，克隆它，并把它输出到别处。跟‘引用’很相似，但它是深度克隆。
+            cs.append('use').attr('xlink:href', '.marker-icon')
+
+            // updata
+            this.markersBoxG
+                .selectAll('.marker')
+                .data(data)
+                .attr('class', d => {
+                    return `marker marker-${d.areaCode}`
+                })
+                .attr('transform', d => {
+                    const { latitude, longitude } = d
+                    const position = this.getPositionByLatLng({ latitude, longitude }, false)
+                    const transform = d3.zoomTransform(this._topGroup.node())
+                    // 如何将经纬度转换为translate的xy？渲染到svg上
+                    // 根据投影函数，将经纬度转换为平面坐标 不同投影函数效果不同
+                    return `translate(${position.x}, ${position.y}) scale(${1 / transform.k})`
+                })
+                .select('text')
+                .text(function (d) {
+                    return d.areaName
+                })
+                .attr('stroke', 'currentColor')
+
+            // exit
+            this.markersBoxG
+                .selectAll('.marker')
+                .data(data)
+                // 得到没有任何数据关联的图形元素
+                .exit()
+                // 移除多余的元素
+                .remove()
+
+            d3.selectAll('.marker').on('click', (e, d) => {
+                console.log('选中marker', d, e)
+                this.handleMarker(d)
+            })
+        },
+        async renderMarkerByD3_text() {
             this.markerData = await this.getAreaMarkerList({ areaId: this.currentAreaCode })
             const data = this.markerData
             console.log(this.markerData, '==this.markerData==')
@@ -162,9 +246,7 @@ export default {
                 .data(data)
                 .enter()
                 .append('g')
-                .attr('class', (d, i) => {
-                    return `marker marker-${i}`
-                })
+                .attr('class', 'marker')
                 .attr('color', () => {
                     return 'red'
                 })
@@ -179,10 +261,13 @@ export default {
             this.markersBoxG
                 .selectAll('.marker')
                 .data(data)
+                .attr('class', d => {
+                    return `marker marker-${d.areaCode}`
+                })
                 .attr('transform', d => {
-                    const position = this.getPositionByLatLng(d.latitude, d.longitude, false)
+                    const { latitude, longitude } = d
+                    const position = this.getPositionByLatLng({ latitude, longitude }, false)
                     const transform = d3.zoomTransform(this._topGroup.node())
-                    console.log(transform, '===transform====')
                     // 如何将经纬度转换为translate的xy？渲染到svg上
                     // 根据投影函数，将经纬度转换为平面坐标 不同投影函数效果不同
                     return `translate(${position.x}, ${position.y}) scale(${1 / transform.k})`
@@ -212,7 +297,7 @@ export default {
             this.renderInfoWindow()
         },
         renderInfoWindow({ longitude, latitude } = this.currentMarker) {
-            const position = this.getPositionByLatLng(latitude, longitude)
+            const position = this.getPositionByLatLng({ latitude, longitude })
             this.infoWindow.show = true
             this.infoWindow.style = {
                 left: `${position.x}px`,
@@ -406,8 +491,7 @@ export default {
                     .text(d => d.properties.name)
             }
 
-            this.renderMarkerByD3()
-            this.renderMarkerByHtml()
+            this.renderMarker()
             const animate = [shadow, areaGroup, labelGroup].filter(item => item)
             animate.forEach(n => n.transition().style('opacity', 1))
             /**
@@ -421,9 +505,7 @@ export default {
                     cuAreaLayer.selectAll('g[shadow]').transition().style('opacity', 0)
                     cuAreaLayer.selectAll('g[boundary]').transition().style('opacity', this.backgroundOpacity)
                     cuLabelLayer.selectAll('g[label]').transition().style('opacity', this.backgroundLabelOpacity)
-                    console.log(123)
                 } else if (i > level) {
-                    console.log(456)
                     ;[cuAreaLayer, cuLabelLayer].forEach(n => {
                         n.selectAll('g').transition().style('opacity', 0).remove()
                     })
@@ -660,8 +742,8 @@ export default {
             //         .match(/translate\([0-9.,]*\)/)[0]
             //     return `${transform} scale(${1 / k})`
             // })
-            this.markersBoxG.selectAll('.marker').attr('transform', d => {
-                const position = this.getPositionByLatLng(d.latitude, d.longitude, false)
+            this.markersBoxG.selectAll('.marker').attr('transform', ({ latitude, longitude }) => {
+                const position = this.getPositionByLatLng({ latitude, longitude }, false)
                 return `translate(${position.x}, ${position.y}) scale(${1 / e.transform.k})`
             })
             if (this.currentMarker && this.infoWindow.show) {
