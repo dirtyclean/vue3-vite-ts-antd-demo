@@ -15,7 +15,7 @@ infoWindow通过html渲染----已完成
         <svg id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
         <svg width="24px" height="32px" viewBox="0 0 24 32">
             <defs>
-                <g class="marker-icon">
+                <g id="marker-icon">
                     <path
                         d="M22.1628914,16.5 L15.4960882,28.8812059 C15.5438791,29.6080861 15.1498558,30.2552489 14.5284271,30.7213203 C13.8813462,31.206631 12.9857964,31.5 12,31.5 C11.0142036,31.5 10.1186538,31.206631 9.47157288,30.7213203 C8.85014424,30.2552489 8.45612085,29.6080861 8.50391175,28.8812059 L8.50391175,28.8812059 L1.83710858,16.5 L22.1628914,16.5 Z"
                         fill="currentColor"
@@ -133,7 +133,7 @@ export default {
     mounted() {
         setTimeout(() => {
             this.initSVG()
-            this.renderMarker2()
+            // this.renderMarker2()
         }, 800)
     },
     methods: {
@@ -183,10 +183,9 @@ export default {
             this.markerData = await this.getAreaMarkerList({ areaId: this.currentAreaCode })
             const data = this.markerData
             console.log(this.markerData, '==this.markerData==')
+            const renderEl = this.markersBoxG.selectAll('.marker').data(data)
             // enter
-            const cs = this.markersBoxG
-                .selectAll('.marker')
-                .data(data)
+            const g = renderEl
                 .enter()
                 .append('g')
                 .attr('class', 'marker')
@@ -197,14 +196,21 @@ export default {
                 .on('mouseout', this.onAreaMouseOut)
                 .on('mouseleave', this.onAreaMouseLeave)
                 .on('mousemove', this.onAreaMouseMove)
-            cs.append('text').attr('font-size', this.areaLabelFontSize)
-            // <use>标记的作用是能从SVG文档内部取出一个节点，克隆它，并把它输出到别处。跟‘引用’很相似，但它是深度克隆。
-            cs.append('use').attr('xlink:href', '.marker-icon')
 
-            // updata
-            this.markersBoxG
-                .selectAll('.marker')
-                .data(data)
+            // <use>标记的作用是能从SVG文档内部取出一个节点，克隆它，并把它输出到别处。跟‘引用’很相似，但它是深度克隆。
+            g.append('use').attr('xlink:href', '#marker-icon')
+            g.append('text').attr('font-size', this.areaLabelFontSize)
+            g.append('text')
+                .attr('font-size', this.areaLabelFontSize)
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('dy', 17)
+                .attr('dx', 11.5)
+                .attr('fill', 'white')
+                .attr('text-anchor', 'middle')
+
+            // update
+            g.merge(renderEl)
                 .attr('class', d => {
                     return `marker marker-${d.areaCode}`
                 })
@@ -216,16 +222,14 @@ export default {
                     // 根据投影函数，将经纬度转换为平面坐标 不同投影函数效果不同
                     return `translate(${position.x}, ${position.y}) scale(${1 / transform.k})`
                 })
-                .select('text')
+                .selectAll('text')
                 .text(function (d) {
                     return d.areaName
                 })
                 .attr('stroke', 'currentColor')
 
             // exit
-            this.markersBoxG
-                .selectAll('.marker')
-                .data(data)
+            renderEl
                 // 得到没有任何数据关联的图形元素
                 .exit()
                 // 移除多余的元素
