@@ -20,9 +20,13 @@
                 :currentAreaCode="areaCodes.slice(-1)[0]"
                 @update-area-codes="updateAreaCodes"
                 ref="d3MapRef"
+                :markerOffset="[0, 0]"
             >
                 <template #infoWindow="params">
                     <infoWindow :params="params" @close-info-window="closeInfoWindow" />
+                </template>
+                <template #marker="params">
+                    <Marker :params="params" />
                 </template>
             </d3Map>
         </div>
@@ -31,6 +35,7 @@
 <script lang="ts" setup>
 import d3Map from '@/components/d3Map.vue'
 import infoWindow from './infoWindow.vue'
+import Marker from './marker.vue'
 import { getAreaMarkerList, getAreaList } from '@/api/map'
 import { ref, reactive, Ref } from 'vue'
 import { getSelectedIds } from '@/utils/methods'

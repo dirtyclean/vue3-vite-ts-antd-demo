@@ -3,7 +3,7 @@
  * @Author: dirtyclean 
  * @Date: 2021-12-23 17:13:15 
  * @Last Modified by: dirtyclean
- * @Last Modified time: 2022-01-04 16:53:04
+ * @Last Modified time: 2022-01-04 16:37:34
  */
 调用onDownloadBtnClick下载svg图片
 marker通过d3渲染----已完成文字渲染 未完成复杂的实现
@@ -29,18 +29,18 @@ infoWindow通过html渲染----已完成
         <div class="absolute z-1" v-if="infoWindow.show" :style="infoWindow.style" :key="generator.randomNum">
             <slot name="infoWindow" v-bind="currentMarker"></slot>
         </div>
-        <template v-if="renderMarkerType === 'slot'">
-            <div
-                v-for="(item, index) in markerData"
-                :key="index"
-                :class="`absolute text-red-600`"
-                :style="{ ...item.style, fontSize: '12px' }"
-                @click="handleMarker(item)"
-            >
-                <slot name="marker" v-bind="item"></slot>
-            </div>
-        </template>
+
+        <div
+            v-for="(item, index) in markerData"
+            :key="index"
+            :class="`absolute text-red-600`"
+            :style="{ ...item.style, fontSize: '12px' }"
+            @click="handleMarker(item)"
+        >
+            <slot name="marker" v-bind="item"></slot>
+        </div>
     </div>
+    <div id="bar"></div>
 </template>
 
 <script>
@@ -94,15 +94,10 @@ export default {
         renderMarkerType: {
             type: String,
             required: false,
-            default: 'markers-box' // 可选 markers-box 或slot
+            default: 'slot' // 可选 d3 或slot
         },
         // marker偏移
-        markerOffset: {
-            type: Array,
-            required: false,
-            default: () => [0, 0]
-        },
-        infoWindowOffset: {
+        offset: {
             type: Array,
             required: false,
             default: () => [0, 0]
@@ -151,11 +146,12 @@ export default {
         // suspense组件目前引发的问题，有：路由跳转进入页面，mounted拿不到dom元素, 必须用setTimeout延时；
         setTimeout(() => {
             this.initSVG()
+            // this.renderMarker2()
         }, 800)
     },
     methods: {
         updateMarkerPosition(markerData = this.markerData) {
-            if (this.renderMarkerType === 'markers-box') {
+            if (this.renderMarkerType === 'd3') {
                 const transform = d3.zoomTransform(this._topGroup.node())
                 this.markersBoxG.selectAll('.marker').attr('transform', ({ latitude, longitude }) => {
                     const position = this.getPositionByLatLng({ latitude, longitude }, false)
@@ -168,8 +164,8 @@ export default {
                         latitude,
                         longitude,
                         offset: [
-                            this.markerOffset[0],
-                            this.markerOffset[1] // document.getElementsByClassName(`marker-${areaCode}`)[0].getBoundingClientRect().height
+                            this.offset[0],
+                            this.offset[1] // document.getElementsByClassName(`marker-${areaCode}`)[0].getBoundingClientRect().height
                         ]
                     })
                     return {
@@ -194,26 +190,26 @@ export default {
                 }
             }
             return {
-                x: position[0] - this.markerOffset[0],
-                y: position[1] - this.markerOffset[1]
+                x: position[0],
+                y: position[1]
             }
         },
         renderMarker() {
-            // this.renderMarkerByMarkersBox().finally(() => {
-            //     this.renderMarkerBySlot()
+            // this.renderMarkerByD3().finally(() => {
+            //     this.renderMarkerByHtml()
             // })
-            if (this.renderMarkerType === 'markers-box') {
-                this.renderMarkerByMarkersBox()
+            if (this.renderMarkerType === 'd3') {
+                this.renderMarkerByD3()
             } else if (this.renderMarkerType === 'slot') {
-                this.renderMarkerBySlot()
+                this.renderMarkerByHtml()
             }
         },
-        async renderMarkerBySlot() {
+        async renderMarkerByHtml() {
             const markerData = await this.getAreaMarkerList({ areaId: this.currentAreaCode })
             this.updateMarkerPosition(markerData)
         },
-        // async renderMarkerByMarkersBox() {},
-        async renderMarkerByMarkersBox() {
+        // async renderMarkerByD3() {},
+        async renderMarkerByD3() {
             this.markerData = await this.getAreaMarkerList({ areaId: this.currentAreaCode })
             const data = this.markerData
             console.log(this.markerData, '==this.markerData==')
@@ -274,7 +270,7 @@ export default {
                 this.handleMarker(d)
             })
         },
-        async renderMarkerByMarkersBox_text() {
+        async renderMarkerByD3_text() {
             this.markerData = await this.getAreaMarkerList({ areaId: this.currentAreaCode })
             const data = this.markerData
             console.log(this.markerData, '==this.markerData==')
@@ -338,9 +334,48 @@ export default {
             const position = this.getPositionByLatLng({ latitude, longitude })
             this.infoWindow.show = true
             this.infoWindow.style = {
-                left: `${position.x - this.infoWindowOffset[0]}px`,
-                top: `${position.y - this.infoWindowOffset[1]}px`
+                left: `${position.x}px`,
+                top: `${position.y}px`
             }
+        },
+        renderMarker2(data = [10, 15, 30, 50, 80, 65, 55, 30, 20, 10, 8]) {
+            // enter
+            // 选中#bar, 选中类名为h bar的div, 其实刚开始页面，上是没有这些元素的，选择出图形元素的集合
+            d3.select('#bar')
+                .selectAll('div.h-bar')
+                // data函数讲数组绑定到简要创建的图形元素上
+                .data(data)
+                // enter函数选择没有被可视化的数据元素，render第 -次调用的时候， 没有数据被可视化，所以选 中的是所有数据
+                .enter()
+                // 为每个数据创建一个div,这里d3为响应的div添加了data属性，这个属性值就是未绑定的数据值
+                .append('div')
+                // 设置div的类名为h-bar
+                .attr('class', 'h-bar')
+                // 每个div中添加一个span, 为了展示数值
+                .append('span')
+            // updata
+            // 选中#bar,选中类名为h-bar的div,其实刚开始页面上是没有这些元素的，选择出图形元素的集合
+            d3.select('#bar')
+                .selectAll('div.h-bar')
+                // 定义图形集合和数据集合，更新模式下，data函数返回的是数据集合和图形集合的交集
+                .data(data)
+                // 在和数据关联的图形改变属性，所有的d3修饰函数都可以使用这个函数去修改图形元素的属性
+                .style('width', function (d) {
+                    return d * 3 + 'px'
+                })
+                // 子元素能拿到父元素的值
+                .select('span')
+                .text(function (d) {
+                    return d
+                })
+            // exit
+            d3.select('#bar')
+                .selectAll('div.h-bar')
+                .data(data)
+                // 得到没有任何数据关联的图形元素
+                .exit()
+                // 移除多余的元素
+                .remove()
         },
         async initSVG() {
             const svg = (this._svg = d3.select('#svg'))
