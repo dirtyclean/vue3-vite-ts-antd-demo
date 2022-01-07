@@ -20,5 +20,19 @@ windicss 是以 Tailwindcss 为灵感制作的库,windicss更快、兼容性更�
 采用standard-with-typescript规则
 ## stylelint
 ## prettier 
+## defineComponent解决了什么
+引入 defineComponent() 以正确推断 setup() 组件的参数类型
+
+defineComponent 可以正确适配无 props、数组 props 等形式
+
+defineComponent 可以接受显式的自定义 props 接口或从属性验证对象中自动推断
+
+在 tsx 中，element-ui 等全局注册的组件依然要用 kebab-case 形式
+
+在 tsx 中，v-model 要用 model={{ value, callback }} 写法
+
+在 tsx 中，scoped slots 要用 scopedSlots={{ foo: (scope) => (<Bar/>) }} 写法
+
+defineComponent 并不适用于函数式组件，应使用 RenderContext<interface> 解决
 
 # 目录结构

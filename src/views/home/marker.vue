@@ -19,7 +19,10 @@
     {{ params.areaName }}
 </template>
 <script lang="ts" setup>
+interface Params {
+    areaName: String
+}
 defineProps<{
-    params: Object
+    params: Params
 }>()
 </script>
