@@ -30,7 +30,14 @@ export const routes: Array<RouteRecordRaw> = [
     path: '/old',
     component: () => import('@/views/home/old.vue'),
     meta: {
-      title: '首页',
+      title: 'old',
+    },
+  },
+  {
+    path: '/signalr',
+    component: () => import('@/views/home/signalr.vue'),
+    meta: {
+      title: 'signalr',
     },
   },
   ...shared,

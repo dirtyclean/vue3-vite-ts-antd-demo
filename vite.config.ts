@@ -133,6 +133,11 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           target: VITE_API,
           changeOrigin: true,
         },
+        '/chatHub': {
+          target: 'https://127.0.0.1:5001',
+          changeOrigin: true,
+          secure: false // true/false, if you want to verify the SSL Certs
+        },
       },
     },
     optimizeDeps: {
