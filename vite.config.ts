@@ -136,6 +136,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         '/chatHub': {
           target: 'https://127.0.0.1:5001',
           changeOrigin: true,
+          ws: true, // true/false, if you want to proxy websockets
           secure: false // true/false, if you want to verify the SSL Certs
         },
       },

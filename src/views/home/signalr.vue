@@ -34,9 +34,7 @@ import * as signalR from '@microsoft/signalr'
 import { onMounted } from 'vue'
 onMounted(() => {
     const connection = new signalR.HubConnectionBuilder()
-        .withUrl('/chatHub', {
-            webSocket: ''
-        })
+        .withUrl('/chatHub') // 可后端支持跨域；前后端在同一域下；可设置谷歌浏览器允许跨域调试；proxy设置 ws: true, secure: false
         .withAutomaticReconnect() // 自动断开重连
         .build()
     console.log(connection)
