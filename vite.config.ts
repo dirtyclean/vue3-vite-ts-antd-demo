@@ -98,6 +98,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       }),
     ],
     css: {
+      ...pxToViewport,
       preprocessorOptions: {
         // less: {
         //   modifyVars: {},
@@ -112,7 +113,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
             '@footer-height': '70px',
           },
         },
-        ...pxToViewport,
         // scss: {
         //   additionalData: `
         //   @use 'sass:math';

@@ -9,6 +9,9 @@
 用于生成 svg 雪碧图
 ## windi.config.ts
 windicss 是以 Tailwindcss 为灵感制作的库,windicss更快、兼容性更好、使用 Typescript 构建,他们解决的问题是类似的。
+https://github.com/windicss/docs-cn
+https://cn.windicss.org/ 中文地址
+https://windicss.org/ 英文地址
 ## dayjs
 类moment.js的轻量的处理时间和日期的 JavaScript 库
 ## pinia
