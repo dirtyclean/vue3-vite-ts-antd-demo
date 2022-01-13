@@ -34,5 +34,8 @@ defineComponent 可以接受显式的自定义 props 接口或从属性验证对
 在 tsx 中，scoped slots 要用 scopedSlots={{ foo: (scope) => (<Bar/>) }} 写法
 
 defineComponent 并不适用于函数式组件，应使用 RenderContext<interface> 解决
-
+## TypeScript 忽略类型检查
+单行忽略(添加到特定行的行前来忽略这一行的错误) // @ts-ignore
+跳过对某些文件的检查 (添加到该文件的首行才起作用) // @ts-nocheck
+对某些文件的检查 // @ts-check
 # 目录结构

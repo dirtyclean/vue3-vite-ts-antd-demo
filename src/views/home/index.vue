@@ -14,13 +14,14 @@
             expand-trigger="hover"
         />
         <div class="w-300 h-200">
+            <!-- renderMarkerType="slot" :key="areaCodes.slice(-1)[0]" -->
             <d3Map
                 :getAreaMarkerList="getAreaMarkerList"
                 :showAreaText="false"
                 :currentAreaCode="areaCodes.slice(-1)[0]"
                 @update-area-codes="updateAreaCodes"
                 ref="d3MapRef"
-                :markerOffset="[0, 0]"
+                :markerOffset="[30, 30]"
             >
                 <template #infoWindow="params">
                     <infoWindow :params="params" @close-info-window="closeInfoWindow" />
@@ -33,7 +34,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import d3Map from '@/components/d3Map-js.vue'
+import d3Map from '@/components/d3Map.vue'
 import infoWindow from './infoWindow.vue'
 import Marker from './marker.vue'
 import { getAreaMarkerList, getAreaList } from '@/api/map'
@@ -48,6 +49,7 @@ areaCodes.value = state.areaData.length ? [state.areaData[0].areaCode] : []
 const updateAreaCodes = currentAreaCode => {
     areaCodes.value = getSelectedIds(state.areaData, currentAreaCode, 'parentAreaCode', 'areaCode')
 }
+// @ts-ignore
 const d3MapRef = ref<InstanceType<typeof d3Map>>()
 const closeInfoWindow = () => {
     d3MapRef.value && d3MapRef.value.closeInfoWindow()

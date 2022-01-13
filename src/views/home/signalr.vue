@@ -32,20 +32,24 @@
 import * as signalR from '@microsoft/signalr'
 // import { useSignalR } from '@quangdao/vue-signalr'; // vue的封装
 import { onMounted } from 'vue'
+interface HTMLElementPlus extends HTMLElement {
+    disabled?: boolean
+    value?: String
+}
 onMounted(() => {
     const connection = new signalR.HubConnectionBuilder()
         .withUrl('/chatHub') // 可后端支持跨域；前后端在同一域下；可设置谷歌浏览器允许跨域调试；proxy设置 ws: true, secure: false
         .withAutomaticReconnect() // 自动断开重连
         .build()
     console.log(connection)
-    const sendButton = document.getElementById('sendButton')
-    const messagesList = document.getElementById('messagesList')
-    const userInput = document.getElementById('userInput')
-    const messageInput = document.getElementById('messageInput')
+    const sendButton = document.getElementById('sendButton') as HTMLElementPlus
+    const messagesList = document.getElementById('messagesList') as HTMLElementPlus
+    const userInput = document.getElementById('userInput') as HTMLElementPlus
+    const messageInput = document.getElementById('messageInput') as HTMLElementPlus
     // Disable send button until connection is established
     sendButton.disabled = true
 
-    connection.on('ReceiveMessage', function (user, message) {
+    connection.on('ReceiveMessage', (user: any, message: any) => {
         const li = document.createElement('li')
         messagesList.appendChild(li)
         // We can assign user-supplied strings to an element's textContent because it
@@ -53,10 +57,9 @@ onMounted(() => {
         // should be aware of possible script injection concerns.
         li.textContent = `${user} says ${message}`
     })
-    console.log('==========')
     connection
         .start()
-        .then(function () {
+        .then(() => {
             sendButton.disabled = false
         })
         .catch(function (err) {
