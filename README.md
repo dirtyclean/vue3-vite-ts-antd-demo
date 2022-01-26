@@ -5,6 +5,7 @@
 配置Volar，与vetur相同，volar是一个针对vue的vscode插件，不过与vetur不同的是，volar提供了更为强大的功能，< setup > + TS + Volar = 真香
 ## commitlint.config.js
 前端提交信息规范
+官方文档：https://commitlint.js.org/
 ## vite-plugin-svg-icons
 用于生成 svg 雪碧图
 ## windi.config.ts
