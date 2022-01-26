@@ -1,0 +1,76 @@
+@import 'mixin';
+@import 'cover';
+@import 'bases';
+
+@font-face {
+  font-family: 'AlibabaPuHuiTiR';
+  src: url('@/assets/fonts/alibabaPuHuiTi/Alibaba-PuHuiTi-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'AlibabaPuHuiTiM';
+  src: url('@/assets/fonts/alibabaPuHuiTi/Alibaba-PuHuiTi-Medium.ttf');
+}
+
+@font-face {
+  font-family: 'AlibabaPuHuiTiB';
+  src: url('@/assets/fonts/alibabaPuHuiTi/Alibaba-PuHuiTi-Bold.ttf');
+}
+
+@font-face {
+  font-family: 'AlibabaPuHuiTiH';
+  src: url('@/assets/fonts/alibabaPuHuiTi/Alibaba-PuHuiTi-Heavy.ttf');
+}
+
+body,
+html {
+  @include bg_color($background-color-theme1);
+  color: $slider-bg-color;
+  font-family: AlibabaPuHuiTiR, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+ul,
+li {
+  list-style: unset;
+}
+::-webkit-scrollbar {
+  //滚动条整体样式 高宽分别对应横竖滚动条的尺寸
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $primary-color;
+  //滚动条里面小方块
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: #efefef;
+  //滚动条里面轨道
+  border-radius: 4px;
+}
+
+// 向上三角形
+.top-triangle {
+  width: 0;
+  height: 0;
+  border-right: 5px solid transparent;
+  border-bottom: 6px solid #ff0037;
+  border-left: 5px solid transparent;
+}
+
+// 向下三角形
+.bottom-triangle {
+  width: 0;
+  height: 0;
+  border-top: 6px solid #5bc43a;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+}
+

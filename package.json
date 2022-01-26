@@ -20,6 +20,9 @@
   "dependencies": {
     "@microsoft/signalr": "^6.0.1",
     "@vueuse/core": "^7.3.0",
+    "@windicss/plugin-animations": "^1.0.9",
+    "@windicss/plugin-heropatterns": "^0.0.8",
+    "@windicss/plugin-scrollbar": "^1.2.3",
     "ant-design-vue": "3.0.0-alpha.15",
     "axios": "^0.24.0",
     "core-js": "^3.19.3",

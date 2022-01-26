@@ -31,11 +31,6 @@
     "@types/lodash" "^4.14.165"
     lodash "^4.17.15"
 
-"@antfu/utils@^0.1.6":
-  version "0.1.7"
-  resolved "https://registry.npmmirror.com/@antfu/utils/download/@antfu/utils-0.1.7.tgz#ac9e0e62a2490db987c9d8c6b4f38076d763c27f"
-  integrity sha1-rJ4OYqJJDbmHydjGtPOAdtdjwn8=
-
 "@antfu/utils@^0.3.0":
   version "0.3.0"
   resolved "https://registry.npmmirror.com/@antfu/utils/download/@antfu/utils-0.3.0.tgz#6306c43b52a883bd8e973e3ed8dd64248418bcc4"
@@ -968,6 +963,23 @@
     jiti "^1.12.9"
     windicss "^3.4.0"
 
+"@windicss/plugin-animations@^1.0.9":
+  version "1.0.9"
+  resolved "https://registry.npmmirror.com/@windicss/plugin-animations/download/@windicss/plugin-animations-1.0.9.tgz#abd7c82d906ebd7d61cdc62a3019b60e8c57ca72"
+  integrity sha1-q9fILZBuvX1hzcYqMBm2DoxXynI=
+
+"@windicss/plugin-heropatterns@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.npmmirror.com/@windicss/plugin-heropatterns/download/@windicss/plugin-heropatterns-0.0.8.tgz#55b9b78111779dc928966073b984663eb066c9fa"
+  integrity sha1-Vbm3gRF3nckolmBzuYRmPrBmyfo=
+  dependencies:
+    lodash "^4.17.11"
+
+"@windicss/plugin-scrollbar@^1.2.3":
+  version "1.2.3"
+  resolved "https://registry.nlark.com/@windicss/plugin-scrollbar/download/@windicss/plugin-scrollbar-1.2.3.tgz#4796e999e98a4bca6c269fa1faffd2e9b5452cac"
+  integrity sha1-R5bpmemKS8psJp+h+v/S6bVFLKw=
+
 "@windicss/plugin-utils@1.6.1":
   version "1.6.1"
   resolved "https://registry.npmmirror.com/@windicss/plugin-utils/download/@windicss/plugin-utils-1.6.1.tgz#0459428beaa3b9053838c047ccb6001493a926a9"
@@ -980,19 +992,6 @@
     magic-string "^0.25.7"
     micromatch "^4.0.4"
     windicss "^3.4.0"
-
-"@windicss/plugin-utils@^0.16.0":
-  version "0.16.7"
-  resolved "https://registry.npmmirror.com/@windicss/plugin-utils/download/@windicss/plugin-utils-0.16.7.tgz#54cd31841515e849f116a6d89e625da368f7de23"
-  integrity sha1-VM0xhBUV6EnxFqbYnmJdo2j33iM=
-  dependencies:
-    "@antfu/utils" "^0.1.6"
-    debug "^4.3.2"
-    fast-glob "^3.2.5"
-    jiti "^1.9.2"
-    magic-string "^0.25.7"
-    micromatch "^4.0.4"
-    windicss "^3.0.12"
 
 "@yarnpkg/lockfile@^1.1.0":
   version "1.1.0"
@@ -1450,7 +1449,7 @@ chardet@^0.7.0:
   resolved "https://registry.npmmirror.com/chardet/download/chardet-0.7.0.tgz?cache=0&sync_timestamp=1634639202479&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fchardet%2Fdownload%2Fchardet-0.7.0.tgz#90094849f0937f2eedc2425d0d28a9e5f0cbad9e"
   integrity sha1-kAlISfCTfy7twkJdDSip5fDLrZ4=
 
-"chokidar@>=3.0.0 <4.0.0", chokidar@^3.5.1, chokidar@^3.5.2:
+"chokidar@>=3.0.0 <4.0.0", chokidar@^3.5.2:
   version "3.5.2"
   resolved "https://registry.npmmirror.com/chokidar/download/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
   integrity sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==
@@ -2789,11 +2788,6 @@ execall@^2.0.0:
   dependencies:
     clone-regexp "^2.1.0"
 
-exit-hook@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.nlark.com/exit-hook/download/exit-hook-2.2.1.tgz#007b2d92c6428eda2b76e7016a34351586934593"
-  integrity sha1-AHstksZCjtorducBajQ1FYaTRZM=
-
 expand-brackets@^2.1.4:
   version "2.1.4"
   resolved "https://registry.nlark.com/expand-brackets/download/expand-brackets-2.1.4.tgz#b77735e315ce30f6b6eff0f83b04151a22449622"
@@ -2866,17 +2860,6 @@ fast-glob@^3.1.1, fast-glob@^3.2.7:
   version "3.2.7"
   resolved "https://registry.nlark.com/fast-glob/download/fast-glob-3.2.7.tgz?cache=0&sync_timestamp=1625772641246&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ffast-glob%2Fdownload%2Ffast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
   integrity sha1-/Wy3otfpqnp4RhEehaGW1rL3ZqE=
-  dependencies:
-    "@nodelib/fs.stat" "^2.0.2"
-    "@nodelib/fs.walk" "^1.2.3"
-    glob-parent "^5.1.2"
-    merge2 "^1.3.0"
-    micromatch "^4.0.4"
-
-fast-glob@^3.2.5:
-  version "3.2.10"
-  resolved "https://registry.npmmirror.com/fast-glob/download/fast-glob-3.2.10.tgz#2734f83baa7f43b7fd41e13bc34438f4ffe284ee"
-  integrity sha512-s9nFhFnvR63wls6/kM88kQqDhMu0AfdjqouE2l5GVQPbqLgyFjjU5ry/r2yKsJxpb9Py1EYNqieFrmMaX4v++A==
   dependencies:
     "@nodelib/fs.stat" "^2.0.2"
     "@nodelib/fs.walk" "^1.2.3"
@@ -3834,7 +3817,7 @@ jake@^10.6.1:
     filelist "^1.0.1"
     minimatch "^3.0.4"
 
-jiti@^1.12.9, jiti@^1.9.2:
+jiti@^1.12.9:
   version "1.12.9"
   resolved "https://registry.npmmirror.com/jiti/download/jiti-1.12.9.tgz#2ce45b265cfc8dc91ebd70a5204807cf915291bc"
   integrity sha1-LORbJlz8jckevXClIEgHz5FSkbw=
@@ -4107,7 +4090,7 @@ lodash.truncate@^4.4.2:
   resolved "https://registry.nlark.com/lodash.truncate/download/lodash.truncate-4.4.2.tgz#5a350da0b1113b837ecfffd5812cbe58d6eae193"
   integrity sha1-WjUNoLERO4N+z//VgSy+WNbq4ZM=
 
-lodash@^4.17.12, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21:
+lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.npmmirror.com/lodash/download/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -4852,17 +4835,6 @@ postcss-value-parser@^4.1.0:
   version "4.2.0"
   resolved "https://registry.npmmirror.com/postcss-value-parser/download/postcss-value-parser-4.2.0.tgz#723c09920836ba6d3e5af019f92bc0971c02e514"
   integrity sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==
-
-postcss-windicss-postcss7@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.npmmirror.com/postcss-windicss-postcss7/download/postcss-windicss-postcss7-1.1.1.tgz#788a7e9f2815e3eb6270a133fe9abccf8d13863e"
-  integrity sha512-9wraE8OO0CtRndDVnU3Fc03MQp1TpN2ZZuB1517jkYWbfpSSKA8n5jJbAqpPoHQtjRcyio+0/Otj4Wly1S8zKw==
-  dependencies:
-    "@windicss/plugin-utils" "^0.16.0"
-    chokidar "^3.5.1"
-    debug "^4.3.2"
-    exit-hook "^2.2.1"
-    windicss "^3.0.12"
 
 postcss@8.3.6:
   version "8.3.6"
@@ -6272,11 +6244,6 @@ which@^2.0.1:
   integrity sha1-fGqN0KY2oDJ+ELWckobu6T8/UbE=
   dependencies:
     isexe "^2.0.0"
-
-windicss@^3.0.12:
-  version "3.4.2"
-  resolved "https://registry.npmmirror.com/windicss/download/windicss-3.4.2.tgz#257795c9be8b6e93117ffa3fb27874d225da6679"
-  integrity sha512-YieqWaXiwPu0JJoB7z03RXdjZjQQJtMZAeXUXu/j3JXSMhIgV/2rUXu4Q7QrworRlbaASZlFhxjnL/78aAty+Q==
 
 windicss@^3.3.0, windicss@^3.4.0:
   version "3.4.1"

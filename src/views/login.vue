@@ -23,12 +23,9 @@
                 </a-input>
             </a-form-item>
             <a-form-item>
-                <a-button type="primary" html-type="submit" size="large" :loading="state.loading" block>登录</a-button>
+                <a-button type="primary" html-type="submit" size="large" :loading="state.loading">登录</a-button>
             </a-form-item>
         </a-form>
-        <div class="w-100 h-100 bg-red-500" v-loading="state.loading">123</div>
-        <div class="w-50" v-tooltip>Request textDocument/completion failed</div>
-        <div class="pxtovw" style="font-size: 30px">测试pxtovw</div>
     </div>
 </template>
 
@@ -82,11 +79,6 @@ const handleSubmit = async () => {
 </script>
 
 <style lang="scss" scoped>
-.pxtovw {
-    width: 200px;
-    height: 100px;
-    border: 1px solid blue;
-}
 .login-box {
     display: flex;
     width: 100vw;

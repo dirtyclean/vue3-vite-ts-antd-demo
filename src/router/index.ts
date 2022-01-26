@@ -40,6 +40,13 @@ export const routes: Array<RouteRecordRaw> = [
       title: 'signalr',
     },
   },
+  {
+    path: '/windicss',
+    component: () => import('@/views/home/windicss.vue'),
+    meta: {
+      title: 'windicss',
+    },
+  },
   ...shared,
   ...errorRoutes,
 ]
