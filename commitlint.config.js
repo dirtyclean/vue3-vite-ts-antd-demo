@@ -10,6 +10,11 @@ refactor	代码重构
 revert	回滚到上一个版本
 style	代码格式修改, 注意不是 css 修改
 test	测试用例修改
+types 类型定义文件更改
+release 发布新版本
+wip 删除文件
+workflow 工作流相关文件修改
+upgrade 第三方库升级
 
 提交格式（注意冒号后面有空格）
 git commit -m <type>[optional scope]: <description>
@@ -49,7 +54,8 @@ module.exports = {
                 'wip',
                 'workflow',
                 'types',
-                'release'
+                'release',
+                'upgrade'
             ]
         ]
     }
