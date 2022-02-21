@@ -1,24 +1,29 @@
 declare module '*.vue' {
-  import { DefineComponent } from 'vue'
-  const Component: DefineComponent<{}, {}, any>
-  export default Component
+    import { DefineComponent } from 'vue'
+    const Component: DefineComponent<{}, {}, any>
+    export default Component
 }
 
 declare module 'mitt' {
-  import mitt from 'mitt'
-  export default mitt
+    import mitt from 'mitt'
+    export default mitt
 }
 
 declare module 'blueimp-md5' {
-  import md5 from 'blueimp-md5'
-  export default md5
+    import md5 from 'blueimp-md5'
+    export default md5
 }
 
 declare module 'virtual:*' {
-  const result: any
-  export default result
+    const result: any
+    export default result
 }
 declare module 'nprogress' {
-  import nprogress from 'nprogress'
-  export default nprogress
+    import nprogress from 'nprogress'
+    export default nprogress
+}
+
+declare module 'd3' {
+    import * as d3 from 'd3'
+    export default d3
 }
