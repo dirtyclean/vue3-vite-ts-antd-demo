@@ -6,58 +6,65 @@ import 'nprogress/css/nprogress.css' // 进度条样式
 import shared from './staticModules/shared'
 import errorRoutes from './staticModules/error'
 import { App } from 'vue'
-const createRouterGuards = (router) => {
-  router.beforeEach(async (to, from, next) => {
-    const isLogin = Storage.get(ACCESS_TOKEN_KEY)
-    NProgress.start()
-    if (!isLogin && to.path !== '/login') {
-      next('/login')
-    } else {
-      next()
-    }
-    NProgress.done()
-  })
+const createRouterGuards = router => {
+    router.beforeEach(async (to, from, next) => {
+        const isLogin = Storage.get(ACCESS_TOKEN_KEY)
+        NProgress.start()
+        if (!isLogin && to.path !== '/login') {
+            next('/login')
+        } else {
+            next()
+        }
+        NProgress.done()
+    })
 }
-export const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    component: () => import('@/views/home/index.vue'),
-    meta: {
-      title: '首页',
+export const routes: RouteRecordRaw[] = [
+    {
+        path: '/',
+        component: async () => await import('@/views/home/index.vue'),
+        meta: {
+            title: '首页'
+        }
     },
-  },
-  {
-    path: '/old',
-    component: () => import('@/views/home/old.vue'),
-    meta: {
-      title: 'old',
+    {
+        path: '/old',
+        component: async () => await import('@/views/home/old.vue'),
+        meta: {
+            title: 'old'
+        }
     },
-  },
-  {
-    path: '/signalr',
-    component: () => import('@/views/home/signalr.vue'),
-    meta: {
-      title: 'signalr',
+    {
+        path: '/signalr',
+        component: async () => await import('@/views/home/signalr.vue'),
+        meta: {
+            title: 'signalr'
+        }
     },
-  },
-  {
-    path: '/windicss',
-    component: () => import('@/views/home/windicss.vue'),
-    meta: {
-      title: 'windicss',
+    {
+        path: '/windicss',
+        component: async () => await import('@/views/home/windicss.vue'),
+        meta: {
+            title: 'windicss'
+        }
     },
-  },
-  ...shared,
-  ...errorRoutes,
+    {
+        path: '/d3Demo',
+        component: async () => await import('@/views/home/d3Demo.vue'),
+        meta: {
+            title: 'd3Demo'
+        }
+    },
+    ...shared,
+    ...errorRoutes
 ]
 
 export const router = createRouter({
-  history: createWebHashHistory(''),
-  routes,
+    history: createWebHashHistory(''),
+    routes
 })
 
 export function setupRouter(app: App) {
-  app.use(router)
-  createRouterGuards(router)
+    app.use(router)
+    createRouterGuards(router)
 }
 export default router
