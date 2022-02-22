@@ -15,6 +15,21 @@ module.exports = {
             jsx: true
         }
     },
+    // 解决提交ts文件抛
+    // Error while loading rule '@typescript-eslint/dot-notation': You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.
+    // 错误
+    overrides: [
+        {
+            files: ['*.ts', '*.tsx'],
+            parserOptions: {
+                // this setting is required to use rules that require type information
+                project: './tsconfig.json'
+            },
+            rules: {
+                '@typescript-eslint/prefer-nullish-coalescing': 'error'
+            }
+        }
+    ],
     globals: {
         defineProps: true,
         defineEmits: true
@@ -30,6 +45,7 @@ module.exports = {
         'prettier/prettier': ['warn', {}],
         'vue/script-setup-uses-vars': 'error',
         'vue/no-v-html': 'off',
+        '@typescript-eslint/strict-boolean-expressions': 'off',
         '@typescript-eslint/ban-ts-ignore': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
