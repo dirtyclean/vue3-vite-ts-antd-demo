@@ -1,12 +1,22 @@
 <template>
-    <Ring />
-    <Axis />
+    <!-- <Ring /> -->
+    <!-- <Axis />
     <GridLine />
     <RectAxis />
+    <Lines /> -->
+    <!-- <Pie /> -->
+    <PieNew />
+    <Process />
+    <ReactAxisNew />
 </template>
 <script lang="ts" setup>
-import Ring from '@/components/d3-charts/ring.vue'
-import Axis from '@/components/d3-charts/axis.vue'
-import GridLine from '@/components/d3-charts/gridLine.vue'
-import RectAxis from '@/components/d3-charts/rectAxis.vue'
+// import Ring from '@/components/d3-charts/ring.vue'
+// import Axis from '@/components/d3-charts/axis.vue'
+// import GridLine from '@/components/d3-charts/gridLine.vue'
+// import RectAxis from '@/components/d3-charts/rectAxis.vue'
+// import Lines from '@/components/d3-charts/lines.vue'
+// import Pie from '@/components/d3-charts/pie.vue'
+import PieNew from '@/components/d3-charts/pie-new.vue'
+import Process from '@/components/d3-charts/process.vue'
+import ReactAxisNew from '@/components/d3-charts/rectAxis-new.vue'
 </script>

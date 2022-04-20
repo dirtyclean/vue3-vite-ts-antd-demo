@@ -14,6 +14,12 @@ export default class Chart {
         this._padding = { top: 10, left: 10, right: 10, bottom: 10 }
     }
 
+    setId(id) {
+        if (arguments.length === 0) return this._id
+        this._id = id
+        return this
+    }
+
     width(w) {
         if (arguments.length === 0) return this._width
         this._width = w
@@ -66,6 +72,10 @@ export default class Chart {
         if (arguments.length === 0) return this._box
         this._box = b
         return this
+    }
+
+    getSvg() {
+        return this._svg
     }
 
     getBodyWidth() {

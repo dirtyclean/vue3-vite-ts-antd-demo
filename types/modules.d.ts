@@ -22,8 +22,3 @@ declare module 'nprogress' {
     import nprogress from 'nprogress'
     export default nprogress
 }
-
-declare module 'd3' {
-    import * as d3 from 'd3'
-    export default d3
-}

@@ -3,7 +3,7 @@
  * @Author: dirtyclean 
  * @Date: 2021-12-23 17:13:15 
  * @Last Modified by: dirtyclean
- * @Last Modified time: 2022-01-04 16:37:34
+ * @Last Modified time: 2022-04-20 17:16:18
  */
 调用onDownloadBtnClick下载svg图片
 marker通过d3渲染----已完成文字渲染 未完成复杂的实现
@@ -159,7 +159,7 @@ export default {
                 })
             } else if (this.renderMarkerType === 'slot') {
                 this.markerData = markerData.map(item => {
-                    const { longitude, latitude, areaCode } = item
+                    const { longitude, latitude } = item
                     const position = this.getPositionByLatLng({
                         latitude,
                         longitude,
