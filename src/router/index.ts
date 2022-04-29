@@ -54,6 +54,13 @@ export const routes: RouteRecordRaw[] = [
             title: 'd3Demo'
         }
     },
+    {
+        path: '/css',
+        component: async () => await import('@/views/home/css.vue'),
+        meta: {
+            title: 'css'
+        }
+    },
     ...shared,
     ...errorRoutes
 ]

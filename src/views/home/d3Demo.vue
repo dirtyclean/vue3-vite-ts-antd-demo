@@ -4,10 +4,14 @@
     <GridLine />
     <RectAxis />
     <Lines /> -->
-    <!-- <Pie /> -->
+    <Pie />
+    <test />
     <PieNew />
     <Process />
-    <ReactAxisNew />
+    <RectAxisNew />
+    <PieNas />
+    <PiePad />
+    <pie-custom />
 </template>
 <script lang="ts" setup>
 // import Ring from '@/components/d3-charts/ring.vue'
@@ -15,8 +19,12 @@
 // import GridLine from '@/components/d3-charts/gridLine.vue'
 // import RectAxis from '@/components/d3-charts/rectAxis.vue'
 // import Lines from '@/components/d3-charts/lines.vue'
-// import Pie from '@/components/d3-charts/pie.vue'
+import Pie from '@/components/d3-charts/pie.vue'
 import PieNew from '@/components/d3-charts/pie-new.vue'
 import Process from '@/components/d3-charts/process.vue'
-import ReactAxisNew from '@/components/d3-charts/rectAxis-new.vue'
+import RectAxisNew from '@/components/d3-charts/rectAxis-new.vue'
+import PieNas from '@/components/d3-charts/pie-nas.vue'
+import test from '@/components/d3-charts/test.vue'
+import PiePad from '@/components/d3-charts/pie-pad.vue'
+import PieCustom from '@/components/d3-charts/pie-custom.vue'
 </script>

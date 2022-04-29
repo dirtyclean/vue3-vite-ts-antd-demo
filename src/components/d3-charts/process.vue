@@ -66,7 +66,7 @@ const renderChart = () => {
         outerRadius: 120,
         innerRadius: 100
     }
-    // 创建生成器
+    // 创建生成器 cornerRadius圆弧圆角
     const arcPath: any = d3.arc().outerRadius(config.outerRadius).innerRadius(config.innerRadius).cornerRadius(15)
     // 定义表示颜色的序数比例尺
     const colors = {
