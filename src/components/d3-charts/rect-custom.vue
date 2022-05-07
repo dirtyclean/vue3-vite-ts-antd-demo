@@ -3,6 +3,16 @@
         <button @click="changeData" class="absolute left-420px right-0">改变数据</button>
         <button @click="downloadPre" class="absolute left-500px right-0">无视缩放，下载整个svg</button>
         <button @click="downloadCurr" class="absolute left-680px right-0">根据缩放，下载当前svg</button>
+        <ul class="absolute left-900px right-0">
+            <li
+                v-for="item in dataset"
+                @click="activeTooltip(item)"
+                :key="item.name"
+                class="cursor-pointer text-pink-700"
+            >
+                {{ item.name }}
+            </li>
+        </ul>
         <div :ref="el => (reactAxisRef = el)" class="rect-custom" v-loading="loading"></div>
         <div
             class="tooltip"
@@ -20,7 +30,7 @@
 </template>
 <script lang="ts" setup>
 import * as d3 from 'd3'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, Ref } from 'vue'
 type dataObj = {
     name: string
     value: number
@@ -36,10 +46,11 @@ const defaultHoverItem = {
 const currHoverItem = ref({ ...defaultHoverItem })
 const loading = ref(false)
 const reactAxisRef = ref()
-let dataset: Array<dataObj> = []
+const dataset: Ref<Array<dataObj>> = ref([])
 let svg
 let width: number
 let height: number
+const chart: any = {}
 const initSVG = () => {
     return d3.select('.rect-custom').append('svg').attr('width', '100%').attr('height', '100%')
 }
@@ -47,7 +58,7 @@ const getChartData = () => {
     loading.value = true
     return new Promise(resolve => {
         setTimeout(() => {
-            dataset = [
+            dataset.value = [
                 {
                     name: '事故次数',
                     value: ~~(Math.random() * 100)
@@ -86,6 +97,7 @@ const getChartData = () => {
         }, 2000)
     })
 }
+
 const renderChart = () => {
     let xScale, yScale
     // 画布周边的留白
@@ -96,13 +108,15 @@ const renderChart = () => {
         bottom: 70,
         rectPadding: 10 // 矩形之间的空白
     }
+    chart.padding = padding
     const animateDuration = 600
     const renderXAxis = () => {
         // x轴的比例尺
         xScale = d3
             .scaleBand() // 创建一个序数分段比例尺
-            .domain(dataset.map(({ name }) => name))
+            .domain(dataset.value.map(({ name }) => name))
             .rangeRound([0, width - padding.left - padding.right]) // 设置输出范围并启用四舍五入
+        chart.xScale = xScale
         // 定义坐标轴
         const xAxis = d3.axisBottom(xScale).tickSizeInner(0).tickPadding(10)
 
@@ -127,7 +141,7 @@ const renderChart = () => {
         // y轴的比例尺
         yScale = d3
             .scaleLinear()
-            .domain([0, d3.max(dataset, (d: any) => d.value) + 10])
+            .domain([0, d3.max(dataset.value, (d: any) => d.value) + 10])
             .range([height - padding.top - padding.bottom, 0])
         const yAxis = d3.axisLeft(yScale).tickSizeInner(0).tickPadding(10)
         if (svg.selectAll('g.y-axis').node()) {
@@ -158,7 +172,7 @@ const renderChart = () => {
         lines
             .attr('x1', 0)
             .attr('y1', 0)
-            .attr('x2', xScale.bandwidth() * dataset.length)
+            .attr('x2', xScale.bandwidth() * dataset.value.length)
             .attr('y2', 0)
     }
     // 添加矩形和文字元素
@@ -171,14 +185,17 @@ const renderChart = () => {
             .append('g')
             .attr('transform', `translate(${padding.left}, ${padding.top})`)
             .attr('class', 'rect-block')
-        const rects = rectBlock.selectAll('.myRect').data(dataset)
+        const rects = rectBlock.selectAll('.myRect').data(dataset.value)
         const bottomRectWidth = xScale.bandwidth() - rectPadding
+        chart.bottomRectWidth = bottomRectWidth
         const rectInPadding = 2
         const bottomRectHeight = 20
         const rect = rects
             .enter()
             .append('g')
-            .attr('class', 'myRect')
+            .attr('class', d => {
+                return `myRect myRect-${d.name}`
+            })
             .attr('cursor', 'pointer')
             .on('mouseleave', function () {
                 currHoverItem.value = { ...defaultHoverItem }
@@ -259,7 +276,7 @@ const renderChart = () => {
 
     const renderText = () => {
         // =========texts==============
-        const texts = svg.selectAll('.myText').data(dataset)
+        const texts = svg.selectAll('.myText').data(dataset.value)
         // enter
         const text = texts
             .enter()
@@ -301,6 +318,16 @@ const zoom = () => {
             svg.attr('transform', e.transform)
         })
     svg.call(zoom)
+}
+const activeTooltip = item => {
+    const x = chart.xScale(item.name) + chart.padding.rectPadding / 2 + chart.bottomRectWidth / 2 + chart.padding.left
+    const y = height / 2
+    currHoverItem.value = {
+        ...item,
+        left: x,
+        top: y,
+        opacity: 0.8
+    }
 }
 function dataURLtoBlob(dataurl) {
     const arr = dataurl.split(',')
