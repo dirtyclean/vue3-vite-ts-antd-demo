@@ -4,11 +4,12 @@
     <GridLine />
     <RectAxis />
     <Lines /> -->
+    <RectAxisNew />
+    <rect-custom />
     <Pie />
     <test />
     <PieNew />
     <Process />
-    <RectAxisNew />
     <PieNas />
     <PiePad />
     <pie-custom />
@@ -27,4 +28,5 @@ import PieNas from '@/components/d3-charts/pie-nas.vue'
 import test from '@/components/d3-charts/test.vue'
 import PiePad from '@/components/d3-charts/pie-pad.vue'
 import PieCustom from '@/components/d3-charts/pie-custom.vue'
+import RectCustom from '@/components/d3-charts/rect-custom.vue'
 </script>

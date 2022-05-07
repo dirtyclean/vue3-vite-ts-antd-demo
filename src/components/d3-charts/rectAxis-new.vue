@@ -132,6 +132,7 @@ const renderChart = () => {
     }
     // 添加矩形和文字元素
     const rectPadding = padding.rectPadding // 矩形之间的空白
+    let timer
     const renderRect = () => {
         // ===========rects=============
         const rects = svg.selectAll('.myRect').data(dataset)
@@ -147,14 +148,17 @@ const renderChart = () => {
                 currHoverItem.value = { ...defaultHoverItem }
             })
             .on('mousemove', e => {
-                const position = d3.pointer(e)
-                currHoverItem.value.left = position[0]
-                currHoverItem.value.top = position[1]
+                clearTimeout(timer)
+                timer = setTimeout(() => {
+                    const position = d3.pointer(e, svg.node())
+                    currHoverItem.value.left = position[0] + 15
+                    currHoverItem.value.top = position[1] - 15
+                }, 6)
             })
         // update
         rect.merge(rects)
             .on('mouseover', (e, d) => {
-                const position = d3.pointer(e)
+                const position = d3.pointer(e, svg.node())
                 currHoverItem.value = {
                     ...d,
                     left: position[0],
@@ -162,7 +166,6 @@ const renderChart = () => {
                     opacity: 0.8
                 }
             })
-
             .attr('x', d => {
                 return xScale(d.areaName) + rectPadding / 2
             })

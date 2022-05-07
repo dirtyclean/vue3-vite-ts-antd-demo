@@ -46,7 +46,8 @@ const renderChart = () => {
     const config = {
         outerRadius: 120,
         innerRadius: 0,
-        padAngle: 0
+        padAngle: 0,
+        animateDuration: 200
     }
     // 创建生成器
     const arcPath: any = d3
@@ -80,13 +81,21 @@ const renderChart = () => {
     const arc = arcs
         .enter()
         .append('path')
-        .attr('class', 'arc-pie')
+        .attr('class', d => `arc-pie arc-pie-${d.data.name}`)
         .on('mouseover', (e, d) => {
-            console.log('移入')
+            console.log('移入', d)
             d3.select(e.target)
                 .attr('d', arcPathBig(d))
                 .attr('stroke', '#fff')
                 .attr('stroke-width', 6)
+                .transition()
+                .duration(config.animateDuration)
+        })
+        .on('mouseleave', (e, d) => {
+            d3.select(e.target)
+                .attr('d', arcPath(d))
+                .attr('stroke', null)
+                .attr('stroke-width', null)
                 .transition()
                 .duration(config.animateDuration)
         })
