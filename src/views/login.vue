@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, onBeforeUnmount } from 'vue'
+import { reactive, onBeforeUnmount, onMounted } from 'vue'
 import { message } from 'ant-design-vue'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -50,6 +50,9 @@ const route = useRoute()
 const router = useRouter()
 onBeforeUnmount(() => {
     console.log('onBeforeUnmount!')
+})
+onMounted(() => {
+    document.title = '登录'
 })
 const setToken = (token: string) => {
     const ex = 7 * 24 * 60 * 60 * 1000

@@ -32,7 +32,8 @@ module.exports = {
     ],
     globals: {
         defineProps: true,
-        defineEmits: true
+        defineEmits: true,
+        useContext: true
     },
     // 改了配置文件不生效，可以重启一下编辑器
     extends: [

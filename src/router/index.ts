@@ -8,7 +8,8 @@ import errorRoutes from './staticModules/error'
 import { App } from 'vue'
 const createRouterGuards = router => {
     router.beforeEach(async (to, from, next) => {
-        const isLogin = Storage.get(ACCESS_TOKEN_KEY)
+        const isLogin = Storage.get(ACCESS_TOKEN_KEY) || 1
+        console.log(isLogin)
         NProgress.start()
         if (!isLogin && to.path !== '/login') {
             next('/login')
