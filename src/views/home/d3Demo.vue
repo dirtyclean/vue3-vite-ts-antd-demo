@@ -15,6 +15,7 @@
     <PieNas />
     <PiePad />
     <pie-custom />
+    <New />
 </template>
 <script lang="ts" setup>
 // import Ring from '@/components/d3-charts/ring.vue'
@@ -33,4 +34,5 @@ import PiePad from '@/components/d3-charts/pie-pad.vue'
 import PieCustom from '@/components/d3-charts/pie-custom.vue'
 import RectCustom from '@/components/d3-charts/rect-custom.vue'
 import Map from '@/components/d3-charts/map.vue'
+import New from '@/components/d3-charts/new.vue'
 </script>

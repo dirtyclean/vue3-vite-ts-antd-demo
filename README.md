@@ -40,6 +40,7 @@ windicss 是以 Tailwindcss 为灵感制作的库,windicss 更快、兼容性更
 https://github.com/windicss/docs-cn
 https://cn.windicss.org/ 中文地址
 https://windicss.org/ 英文地址
+postcss 和 windicss 不要同时使用，预编译困难，暂时无法实现
 
 ## postcss
 

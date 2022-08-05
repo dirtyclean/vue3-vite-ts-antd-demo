@@ -5,13 +5,13 @@ import legacy from '@vitejs/plugin-legacy'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
 // import styleImport from 'vite-plugin-style-import';
-import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers'
+import { AntDesignVueResolver, VantResolver } from 'unplugin-vue-components/resolvers'
 import Components from 'unplugin-vue-components/vite'
 import WindiCSS from 'vite-plugin-windicss'
 import viteSvgIcons from 'vite-plugin-svg-icons'
 import { injectHtml, minifyHtml } from 'vite-plugin-html'
 import moment from 'dayjs'
-import styleImport, { VantResolve } from 'vite-plugin-style-import'
+import styleImport, { VantResolve, AndDesignVueResolve } from 'vite-plugin-style-import'
 const CWD = process.cwd()
 
 // 环境变量
@@ -61,7 +61,14 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         plugins: [
             vue(),
             styleImport({
-                resolves: [VantResolve()]
+                resolves: [VantResolve(), AndDesignVueResolve()],
+                libs: [
+                    {
+                        libraryName: 'vant',
+                        esModule: true,
+                        resolveStyle: name => `../es/${name}/style`
+                    }
+                ]
             }),
             WindiCSS(),
             vueJsx({
@@ -80,7 +87,8 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
                 resolvers: [
                     AntDesignVueResolver({
                         exclude: ['AButton']
-                    })
+                    }),
+                    VantResolver()
                 ]
             }),
             // styleImport({

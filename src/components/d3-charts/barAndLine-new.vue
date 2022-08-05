@@ -113,7 +113,7 @@ const getChartData = () => {
     return new Promise(resolve => {
         setTimeout(() => {
             const data: any = []
-            for (let i = 0; i < ~~(Math.random() * 10) + 20; i++) {
+            for (let i = 0; i < ~~(Math.random() * 10) + 300; i++) {
                 data.push({
                     areaName: '市' + i,
                     areaCode: 'code-' + i,

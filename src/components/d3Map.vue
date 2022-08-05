@@ -3,12 +3,14 @@
  * @Author: dirtyclean 
  * @Date: 2021-12-23 17:13:15 
  * @Last Modified by: dirtyclean
- * @Last Modified time: 2022-01-04 16:53:04
+ * @Last Modified time: 2022-06-07 17:24:49
  */
 调用onDownloadBtnClick下载svg图片
 marker通过d3渲染----已完成文字渲染 未完成复杂的实现
 marker通过html渲染----已完成
 infoWindow通过html渲染----已完成
+
+高德地图https://lbs.amap.com/demo/javascript-api/example/3d/mask区域掩模也可实现该功能，通过调整高度面和pitch
 -->
 <template>
     <div class="relative overflow-hidden w-1/1 h-1/1" ref="svg">
