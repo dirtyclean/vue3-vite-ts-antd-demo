@@ -141,29 +141,56 @@ const renderChart = () => {
         const circleData = [
             {
                 startAngle: 0,
-                endAngle: (Math.PI * 2) / 6
+                endAngle: 0
             },
             {
                 startAngle: (Math.PI * 2) / 6,
-                endAngle: (Math.PI * 2) / 3
+                endAngle: (Math.PI * 2) / 6
             },
             {
                 startAngle: (Math.PI * 2) / 3,
-                endAngle: (Math.PI * 2) / 2
+                endAngle: (Math.PI * 2) / 3
             },
             {
                 startAngle: (Math.PI * 2) / 2,
-                endAngle: (2 * (Math.PI * 2)) / 3
+                endAngle: (Math.PI * 2) / 2
             },
             {
                 startAngle: (2 * (Math.PI * 2)) / 3,
-                endAngle: (5 * (Math.PI * 2)) / 6
+                endAngle: (2 * (Math.PI * 2)) / 3
             },
             {
                 startAngle: (5 * (Math.PI * 2)) / 6,
-                endAngle: Math.PI * 2
+                endAngle: (5 * (Math.PI * 2)) / 6
             }
         ]
+        // 法二
+        // const circleData = [
+        //     {
+        //         startAngle: 0,
+        //         endAngle: (Math.PI * 2) / 6
+        //     },
+        //     {
+        //         startAngle: (Math.PI * 2) / 6,
+        //         endAngle: (Math.PI * 2) / 3
+        //     },
+        //     {
+        //         startAngle: (Math.PI * 2) / 3,
+        //         endAngle: (Math.PI * 2) / 2
+        //     },
+        //     {
+        //         startAngle: (Math.PI * 2) / 2,
+        //         endAngle: (2 * (Math.PI * 2)) / 3
+        //     },
+        //     {
+        //         startAngle: (2 * (Math.PI * 2)) / 3,
+        //         endAngle: (5 * (Math.PI * 2)) / 6
+        //     },
+        //     {
+        //         startAngle: (5 * (Math.PI * 2)) / 6,
+        //         endAngle: Math.PI * 2
+        //     }
+        // ]
         // 符号生成器
         // symbolCircle 圆形
         // symbolCross 十字架
@@ -184,7 +211,9 @@ const renderChart = () => {
             .attr('fill', '#fff')
             .attr('transform', (d, i) => {
                 const position = arcLine.centroid(d)
-                return `translate(${position[0]},${position[1]}) rotate(${i % 2 !== 0 ? '60' : 0})`
+                return `translate(${position[0]},${position[1]}) rotate(${i * 60 - 30})`
+                // 法二
+                // return `translate(${position[0]},${position[1]}) rotate(${i % 2 !== 0 ? '60' : 0})`
             })
     }
     const renderInArc = () => {
